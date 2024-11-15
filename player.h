@@ -88,6 +88,14 @@ struct OutfitEntry {
 	uint8_t addons;
 };
 
+struct PlayerVocation {
+    PlayerVocation(uint16_t id, uint32_t lvl, uint64_t exp) : vocationId(id), level(lvl), experience(exp) {}
+
+    uint16_t vocationId;
+    uint32_t level;
+	uint64_t experience;
+};
+
 static constexpr int16_t MINIMUM_SKILL_LEVEL = 10;
 
 struct Skill {
@@ -529,10 +537,13 @@ class Player final : public Creature, public Cylinder
 
 		uint16_t getHelpers() const;
 
+		bool changeVocation(uint16_t vocId);
+
 		bool setVocation(uint16_t vocId);
 		uint16_t getVocationId() const {
 			return vocation->getId();
 		}
+
 
 		PlayerSex_t getSex() const {
 			return sex;
@@ -835,6 +846,10 @@ class Player final : public Creature, public Cylinder
 		bool removeOutfit(uint16_t lookType);
 		bool removeOutfitAddon(uint16_t lookType, uint8_t addons);
 		bool getOutfitAddons(const Outfit& outfit, uint8_t& addons) const;
+
+		void addVocation(uint16_t vocationId, uint32_t level, uint64_t experience);
+		void removeVocation(uint16_t vocId);
+		bool hasVocation(uint16_t vocId);
 
 		size_t getMaxVIPEntries() const;
 		size_t getMaxDepotItems() const;
@@ -1354,6 +1369,7 @@ class Player final : public Creature, public Cylinder
 		std::map<uint32_t, int32_t> storageMap;
 
 		std::vector<OutfitEntry> outfits;
+		std::vector<PlayerVocation> vocations;
 		GuildWarVector guildWarVector;
 
 		std::list<ShopInfo> shopItemList;

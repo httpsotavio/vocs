@@ -93,6 +93,13 @@
         "format": "cpp",
         "ranges": "cpp",
         "span": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "*.ipp": "cpp",
+        "coroutine": "cpp",
+        "filesystem": "cpp",
+        "numeric": "cpp",
+        "shared_mutex": "cpp",
+        "source_location": "cpp",
+        "stdfloat": "cpp"
     }
 }

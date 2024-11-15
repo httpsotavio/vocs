@@ -3832,6 +3832,50 @@ bool Player::removeOutfitAddon(uint16_t lookType, uint8_t addons)
 	return false;
 }
 
+void Player::addVocation(uint16_t vocationId, uint32_t level, uint64_t experience)
+{
+	if (hasVocation(vocationId)) {
+		return;
+	}
+
+	PlayerVocation voc(vocationId, level, experience);
+	vocations.push_back(voc);
+}
+
+void Player::removeVocation(uint16_t vocId)
+{
+    for (auto it = vocations.begin(); it != vocations.end(); ++it) {
+        if (it->vocationId == vocId) {
+            vocations.erase(it);
+            return;
+        }
+    }
+}
+
+bool Player::hasVocation(uint16_t vocId)
+{
+	for (const PlayerVocation& vocation : vocations) {
+		if (vocation.vocationId == vocId) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Player::changeVocation(uint16_t vocId) 
+{
+	if (hasVocation(vocId)) {
+		setVocation(vocId);
+		for (auto it = vocations.begin(); it != vocations.end(); ++it) {
+			if (it->vocationId == vocId) {
+				level = it->level;
+				experience = it->experience;
+			}
+    	}
+	}
+	return true;
+}
+
 bool Player::getOutfitAddons(const Outfit& outfit, uint8_t& addons) const
 {
 	if (group->access) {
