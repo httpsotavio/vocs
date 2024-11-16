@@ -9218,7 +9218,7 @@ int LuaScriptInterface::luaPlayerGetCurrentVocation(lua_State* L)
 
 int LuaScriptInterface::luaPlayerAddVocation(lua_State* L)
 {
-	// player:addVocation(id, level)
+	// player:addVocation(id, level, experience)
 	Player* player = getUserdata<Player>(L, 1);
 	if (!player) {
 		lua_pushnil(L);
