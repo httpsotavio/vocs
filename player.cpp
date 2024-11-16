@@ -3865,11 +3865,44 @@ bool Player::hasVocation(uint16_t vocId)
 bool Player::changeVocation(uint16_t vocId) 
 {
 	if (hasVocation(vocId)) {
-		setVocation(vocId);
 		for (auto it = vocations.begin(); it != vocations.end(); ++it) {
 			if (it->vocationId == vocId) {
-				level = it->level;
+				uint32_t oldLevel = level;
 				experience = it->experience;
+				level = it->level;
+
+				Vocation* newVoc = g_vocations.getVocation(it->vocationId);
+
+				if (oldLevel < it->level) {
+					while (oldLevel < level) {
+						++oldLevel;
+						healthMax = std::max<int32_t>(0, healthMax + vocation->getHPGain());
+						manaMax = std::max<int32_t>(0, manaMax + vocation->getManaGain());
+					}
+				}	
+				
+				if (oldLevel > it->level) {
+					while (oldLevel > level) {
+						--oldLevel;
+						healthMax = std::max<int32_t>(0, healthMax - newVoc->getHPGain());
+						manaMax = std::max<int32_t>(0, manaMax - newVoc->getManaGain());
+					}
+				}
+
+				setVocation(vocId);
+
+				health = getMaxHealth();
+				mana = getMaxMana();
+
+				sendSkills();
+				sendStats();
+
+				updateBaseSpeed();
+				setBaseSpeed(getBaseSpeed());
+
+				g_game.changeSpeed(this, 0);
+				g_game.addCreatureHealth(this);
+				// g_game.removeCreature(player, true);
 			}
     	}
 	}

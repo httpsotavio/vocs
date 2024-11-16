@@ -9276,7 +9276,6 @@ int LuaScriptInterface::luaPlayerGetVocationList(lua_State* L) {
     for (const PlayerVocation& vocation : player->vocations) {
         lua_pushinteger(L, vocation.vocationId);
         lua_pushinteger(L, vocation.level);
-        lua_pushinteger(L, vocation.experience);
         lua_settable(L, -3);
     }
 
