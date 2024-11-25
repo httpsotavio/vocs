@@ -3902,22 +3902,21 @@ bool Player::changeVocation(uint16_t vocId)
 
 				Vocation* newVoc = g_vocations.getVocation(it->vocationId);
 
-				if (oldLevel < it->level) {
-					while (oldLevel < level) {
-						++oldLevel;
-						healthMax = std::max<int32_t>(0, healthMax + vocation->getHPGain());
-						manaMax = std::max<int32_t>(0, manaMax + vocation->getManaGain());
-					}
-				}	
-				
 				if (oldLevel > it->level) {
 					while (oldLevel > level) {
 						--oldLevel;
-						healthMax = std::max<int32_t>(0, healthMax - newVoc->getHPGain());
-						manaMax = std::max<int32_t>(0, manaMax - newVoc->getManaGain());
+						healthMax = std::max<int32_t>(0, healthMax - vocation->getHPGain());
+						manaMax = std::max<int32_t>(0, manaMax - vocation->getManaGain());
 					}
 				}
-
+				if (oldLevel < it->level) {
+					while (oldLevel < level) {
+						++oldLevel;
+						healthMax = std::max<int32_t>(0, healthMax + newVoc->getHPGain());
+						manaMax = std::max<int32_t>(0, manaMax + newVoc->getManaGain());
+					}
+				}	
+				
 				setVocation(vocId);
 
 				health = getMaxHealth();
@@ -3941,6 +3940,7 @@ bool Player::changeVocation(uint16_t vocId)
 				defaultOutfit = newOutfit;
 				g_game.internalCreatureChangeOutfit(this, newOutfit);
 				// g_game.removeCreature(player, true);
+				return true;
 			}
     	}
 	}
