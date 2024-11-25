@@ -69,6 +69,8 @@ bool Vocations::loadFromXml()
 				voc.fromVocation = pugi::cast<uint32_t>(attrNode.value());
 			} else if (strcasecmp(attrName, "dualwield") == 0) {
 				voc.dualWield  = pugi::cast<bool>(attrNode.value());
+			} else if (strcasecmp(attrName, "outfit") == 0) {
+				voc.outfit  = pugi::cast<uint16_t>(attrNode.value());
 			} else if (strcasecmp(attrName, "nopongkicktime") == 0) {
 				
 			}else {

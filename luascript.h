@@ -1148,6 +1148,7 @@ class LuaScriptInterface
 		static int luaVocationGetClientId(lua_State* L);
 		static int luaVocationGetName(lua_State* L);
 		static int luaVocationGetDescription(lua_State* L);
+		static int luaVocationGetOutfit(lua_State* L);
 
 		static int luaVocationGetRequiredSkillTries(lua_State* L);
 		static int luaVocationGetRequiredManaSpent(lua_State* L);

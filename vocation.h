@@ -25,6 +25,10 @@ class Vocation
 			return id;
 		}
 
+		uint16_t getOutfit() const {
+			return outfit;
+		}
+
 		uint8_t getClientId() const {
 			return clientId;
 		}
@@ -111,6 +115,7 @@ class Vocation
 
 		uint16_t id;
 		uint16_t gainSoulTicks = 120;
+		uint16_t outfit = 0;
 
 		uint8_t soulMax = 100;
 		uint8_t clientId = 0;

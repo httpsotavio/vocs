@@ -33,6 +33,14 @@ function Player.setVocation(self, param)
 end
 ```
 
+## VOCATIONS.XML CHANGES
+em seu vocations.xml, adicione a tag "outfit", ficando algo como "outfit = 10", isso fará com que o personagem mude de outfit automaticamente quando o player mudar de vocação
+
+a outfit passada como parâmetro deve estar definida em outfits.xml, sendo passado o lookType da outfit como parametro dentro de vocations.xml
+
+
+caso nenhuma "outfit" seja passada a uma vocação em vocations.xml, por padrão, a outfit do player será trocado para a outfit com looktype 10, se esta existir
+
 ### NEW FUNCTIONS
 
 ```lua

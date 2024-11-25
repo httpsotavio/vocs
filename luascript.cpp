@@ -2636,6 +2636,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Vocation", "getClientId", LuaScriptInterface::luaVocationGetClientId);
 	registerMethod("Vocation", "getName", LuaScriptInterface::luaVocationGetName);
 	registerMethod("Vocation", "getDescription", LuaScriptInterface::luaVocationGetDescription);
+	registerMethod("Vocation", "getOutfit", LuaScriptInterface::luaVocationGetOutfit);
 
 	registerMethod("Vocation", "getRequiredSkillTries", LuaScriptInterface::luaVocationGetRequiredSkillTries);
 	registerMethod("Vocation", "getRequiredManaSpent", LuaScriptInterface::luaVocationGetRequiredManaSpent);
@@ -11461,6 +11462,18 @@ int LuaScriptInterface::luaVocationGetDescription(lua_State* L)
 	Vocation* vocation = getUserdata<Vocation>(L, 1);
 	if (vocation) {
 		pushString(L, vocation->getVocDescription());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaVocationGetOutfit(lua_State* L)
+{
+	// vocation:getOutfit()
+	Vocation* vocation = getUserdata<Vocation>(L, 1);
+	if (vocation) {
+		lua_pushnumber(L, vocation->getOutfit());
 	} else {
 		lua_pushnil(L);
 	}

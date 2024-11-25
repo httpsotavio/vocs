@@ -3931,6 +3931,14 @@ bool Player::changeVocation(uint16_t vocId)
 
 				g_game.changeSpeed(this, 0);
 				g_game.addCreatureHealth(this);
+
+				const Outfit* outfit = Outfits::getInstance().getOutfitByLookType(newVoc->getOutfit());
+				if (!outfit) {
+					return true;
+				}
+				Outfit_t newOutfit;
+				newOutfit.lookType = outfit->lookType;
+				g_game.internalCreatureChangeOutfit(this, newOutfit);
 				// g_game.removeCreature(player, true);
 			}
     	}
