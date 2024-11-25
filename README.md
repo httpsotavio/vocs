@@ -15,7 +15,7 @@ CREATE TABLE player_vocations (
     player_id INT NOT NULL,
     vocation_id INT NOT NULL,
     level INT NOT NULL DEFAULT 1,
-    experience INT NOT NULL DEFAULT 0,
+    experience BIGINT NOT NULL DEFAULT 0,
     PRIMARY KEY (player_id, vocation_id),
     FOREIGN KEY (player_id) REFERENCES players(id)
 ) ENGINE=InnoDB;

@@ -1320,7 +1320,10 @@ class Player final : public Creature, public Cylinder
 		bool hasCapacity(const Item* item, uint32_t count) const;
 
 		void gainExperience(uint64_t gainExp, Creature* source);
-		void addExperience(Creature* source, uint64_t exp, bool sendText = false);
+		void addExperience(Creature* source, uint64_t exp, bool sendText = false);		
+		
+		PlayerVocation* getPlayerVocationInList(uint16_t vocationId);
+
 		void removeExperience(uint64_t exp, bool sendText = false);
 
 		void updateInventoryWeight();

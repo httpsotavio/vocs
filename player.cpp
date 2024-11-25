@@ -1696,6 +1696,15 @@ void Player::removeManaSpent(uint64_t amount, bool notify/* = false*/)
 	}
 }
 
+PlayerVocation* Player::getPlayerVocationInList(uint16_t vocationId) {
+	for (auto& vocation : vocations) {
+        if (vocation.vocationId == vocationId) {
+			return &vocation;
+        }
+    }
+    return nullptr;
+}
+
 void Player::addExperience(Creature* source, uint64_t exp, bool sendText/* = false*/)
 {
 	uint64_t currLevelExp = Player::getExpForLevel(level);
@@ -1753,6 +1762,8 @@ void Player::addExperience(Creature* source, uint64_t exp, bool sendText/* = fal
 		}
 	}
 
+	PlayerVocation* playerVoc = getPlayerVocationInList(getVocationId());
+
 	if (prevLevel != level) {
 		health = getMaxHealth();
 		mana = getMaxMana();
@@ -1762,6 +1773,10 @@ void Player::addExperience(Creature* source, uint64_t exp, bool sendText/* = fal
 
 		g_game.changeSpeed(this, 0);
 		g_game.addCreatureHealth(this);
+
+		if (playerVoc != nullptr) {
+			playerVoc->level = level;
+		}
 
 		const uint32_t protectionLevel = static_cast<uint32_t>(g_config.getNumber(ConfigManager::PROTECTION_LEVEL));
 		if (prevLevel < protectionLevel && level >= protectionLevel) {
@@ -1775,6 +1790,10 @@ void Player::addExperience(Creature* source, uint64_t exp, bool sendText/* = fal
 		g_creatureEvents->playerAdvance(this, SKILL_LEVEL, prevLevel, level);
 
 		sendTextMessage(MESSAGE_EVENT_ADVANCE, fmt::format("You advanced from Level {:d} to Level {:d}.", prevLevel, level));
+	}
+
+	if (playerVoc != nullptr) {
+		playerVoc->experience = experience;
 	}
 
 	if (nextLevelExp > currLevelExp) {
@@ -1825,6 +1844,8 @@ void Player::removeExperience(uint64_t exp, bool sendText/* = false*/)
 	uint32_t oldLevel = level;
 	uint64_t currLevelExp = Player::getExpForLevel(level);
 
+	PlayerVocation* playerVoc = getPlayerVocationInList(getVocationId());
+
 	while (level > 1 && experience < currLevelExp) {
 		--level;
 		healthMax = std::max<int32_t>(0, healthMax - vocation->getHPGain());
@@ -1843,6 +1864,10 @@ void Player::removeExperience(uint64_t exp, bool sendText/* = false*/)
 		g_game.changeSpeed(this, 0);
 		g_game.addCreatureHealth(this);
 
+		if (playerVoc != nullptr) {
+			playerVoc->level = level;
+		}
+
 		const uint32_t protectionLevel = static_cast<uint32_t>(g_config.getNumber(ConfigManager::PROTECTION_LEVEL));
 		if (oldLevel >= protectionLevel && level < protectionLevel) {
 			g_game.updateCreatureWalkthrough(this);
@@ -1853,6 +1878,10 @@ void Player::removeExperience(uint64_t exp, bool sendText/* = false*/)
 		}
 
 		sendTextMessage(MESSAGE_EVENT_ADVANCE, fmt::format("You were downgraded from Level {:d} to Level {:d}.", oldLevel, level));
+	}
+
+	if (playerVoc != nullptr) {
+		playerVoc->experience = experience;
 	}
 
 	uint64_t nextLevelExp = Player::getExpForLevel(level + 1);
