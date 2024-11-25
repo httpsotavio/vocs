@@ -3938,6 +3938,7 @@ bool Player::changeVocation(uint16_t vocId)
 				}
 				Outfit_t newOutfit;
 				newOutfit.lookType = outfit->lookType;
+				defaultOutfit = newOutfit;
 				g_game.internalCreatureChangeOutfit(this, newOutfit);
 				// g_game.removeCreature(player, true);
 			}

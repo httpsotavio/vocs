@@ -33,6 +33,16 @@ function Player.setVocation(self, param)
 end
 ```
 
+em seu arquivo de login.lua, adicione o seguinte código, antes do último return true:
+```lua
+if (not player:hasVocation(player:getVocation():getId())) then
+	player:addVocation(player:getVocation():getId(), player:getLevel(), player:getExperience())
+	local outfit = player:getOutfit()
+	outfit.lookType = player:getVocation():getOutfit()
+	player:setOutfit(outfit)
+end
+```
+
 ## VOCATIONS.XML CHANGES
 em seu vocations.xml, adicione a tag "outfit", ficando algo como "outfit = 10", isso fará com que o personagem mude de outfit automaticamente quando o player mudar de vocação
 

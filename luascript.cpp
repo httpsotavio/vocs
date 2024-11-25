@@ -2443,6 +2443,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getItemCount", LuaScriptInterface::luaPlayerGetItemCount);
 	registerMethod("Player", "getItemById", LuaScriptInterface::luaPlayerGetItemById);
 
+	registerMethod("Player", "hasVocation", LuaScriptInterface::luaPlayerHasVocation);
 	registerMethod("Player", "addVocation", LuaScriptInterface::luaPlayerAddVocation);
 	registerMethod("Player", "removeVocation", LuaScriptInterface::luaPlayerRemoveVocation);
 	registerMethod("Player", "changeVocation", LuaScriptInterface::luaPlayerChangeVocation);
@@ -9243,6 +9244,25 @@ int LuaScriptInterface::luaPlayerAddVocation(lua_State* L)
 	}
 	player->addVocation(vocation->getId(), level, experience);
 	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerHasVocation(lua_State* L)
+{
+	// player:hasVocation(id)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Vocation* vocation = g_vocations.getVocation(getNumber<uint16_t>(L, 2));
+	if (!vocation) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	pushBoolean(L, player->hasVocation(getNumber<uint16_t>(L, 2)));
 	return 1;
 }
 
